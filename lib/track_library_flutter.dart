@@ -1,5 +1,6 @@
 library track_library_flutter;
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:track_library_flutter/models/action_validate_model.dart';
 import 'package:track_library_flutter/models/add_log_track_model.dart';
 import 'package:http/http.dart' as http;
@@ -26,7 +27,9 @@ class RemoteService {
       if (response.statusCode == 200) {
         _listAction = actionValidationModelFromJson(response.body);
         if (_listAction != null){
-          print('[TrackApi] : Actions validation ready!');
+          if (kDebugMode) {
+            print('[TrackApi] : Actions validation ready!');
+          }
           var listLength = _listAction?.data.validations.length;
           var listValidations = _listAction?.data.validations;
 
@@ -41,15 +44,23 @@ class RemoteService {
           }
         }
       } else {
-        print('[TrackApi] Request failed! message : ${_listAction?.status}');
+        if (kDebugMode) {
+          print('[TrackApi] Request failed! message : ${_listAction?.status}');
+        }
         actionValidStatus = false;
       }
       if (actionValidStatus == false){
-        print('[TrackApi] : Invalid actions! failed to report to server');
+        if (kDebugMode) {
+          print('[TrackApi] : Invalid actions! failed to report to server');
+        }
       }
     } on SocketException catch(e) {
-      print('[TrackApi] Connection failed');
-      print('[TrackApi] Found exception : $e');
+      if (kDebugMode) {
+        print('[TrackApi] Connection failed');
+      }
+      if (kDebugMode) {
+        print('[TrackApi] Found exception : $e');
+      }
     }
     return actionValidStatus;
   }
@@ -71,16 +82,26 @@ class RemoteService {
       );
       if (response.statusCode == 200) {
         _addLogTrackModel = addLogTrackModelFromJson(response.body);
-        print('[TrackApi] : (action name : $actionName) & (action : $action) are valid! & successfully reported');
-        print('[TrackApi] Status : ${_addLogTrackModel?.message}');
+        if (kDebugMode) {
+          print('[TrackApi] : (action name : $actionName) & (action : $action) are valid! & successfully reported');
+        }
+        if (kDebugMode) {
+          print('[TrackApi] Status : ${_addLogTrackModel?.message}');
+        }
         message = response.body;
       } else {
-        print('[TrackApi] Request failed! message  : ${response.body}');
+        if (kDebugMode) {
+          print('[TrackApi] Request failed! message  : ${response.body}');
+        }
         message = response.body;
       }
     }on SocketException catch(e) {
-      print('[TrackApi] Connection failed');
-      print('[TrackApi] Found exception : $e');
+      if (kDebugMode) {
+        print('[TrackApi] Connection failed');
+      }
+      if (kDebugMode) {
+        print('[TrackApi] Found exception : $e');
+      }
       message = e.toString();
     }
     return message;
