@@ -1,7 +1,7 @@
 name: track_library_flutter
 description: A Demo-Library for App-Tracking in Flutter
 version: 0.0.1
-homepage:
+homepage: https://github.com/NeoRevolt/track_library_flutter.git
 
 environment:
   sdk: '>=2.19.4 <3.0.0'
